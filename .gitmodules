@@ -1,0 +1,3 @@
+[submodule "externals/cpr"]
+	path = externals/cpr
+	url = git@github.com:whoshuu/cpr.git
