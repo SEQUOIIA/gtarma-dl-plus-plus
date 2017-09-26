@@ -17,6 +17,9 @@ file(GLOB_RECURSE gtarma-dl_HEADER
 "include/*.h"
 )
 
+include_directories("include")
+include_directories("externals/rapidjson/include")
+
 add_executable(${PROJECT_NAME} ${gtarma-dl_SRC} ${gtarma-dl_HEADER})
 
 add_subdirectory(externals/cpr)

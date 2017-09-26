@@ -1,3 +1,6 @@
 [submodule "externals/cpr"]
 	path = externals/cpr
 	url = git@github.com:whoshuu/cpr.git
+[submodule "externals/rapidjson"]
+	path = externals/rapidjson
+	url = git@github.com:Tencent/rapidjson.git
