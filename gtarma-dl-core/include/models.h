@@ -2,7 +2,7 @@
 
 namespace gtarma {
 	namespace model {
-		class Item {
+		class __declspec(dllexport) Item {
 		public:
 			std::string Id, Filename;
 		};

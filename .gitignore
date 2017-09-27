@@ -1,1 +1,5 @@
 build
+.vscode
+.vs
+gtarma-dl-core/externals/cpr
+gtarma-dl-core/externals/rapidjson

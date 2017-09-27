@@ -1,14 +1,13 @@
 #include <cpr\cpr.h>
 #include <rapidjson\document.h>
-#include <vector>
 #include <curl\curl.h>
+#include <iostream>
 #include <sstream>
 
-#include "models.h"
+#include "tools.h"
 
-
-namespace gtarma {
-
+namespace gtarma 
+{
 	const char *ENDPOINT_DRIVEFILES = "https://clients6.google.com/drive/v2beta/files";
 	const char *ENDPOINT_DRIVEDLFILE = "https://drive.google.com/uc";
 	const char *REFERER = "https://drive.google.com/drive/folders/0B8j-xMQtDZvwVjN6R25sWF94dG8";
@@ -44,7 +43,7 @@ namespace gtarma {
 		rapidjson::Value& items = doc["items"];
 		int count = 0;
 		std::vector<model::Item> payloadv;
-		for (rapidjson::Value::ConstValueIterator i = items.Begin(); i != items.End(); i++) 
+		for (rapidjson::Value::ConstValueIterator i = items.Begin(); i != items.End(); i++)
 		{
 			rapidjson::Value& item = items[count];
 			model::Item payload;
@@ -70,7 +69,7 @@ namespace gtarma {
 		return written;
 	}
 
-	void DownloadFile(model::Item item) {
+	void DownloadFile(model::Item item, std::string path) {
 		CURL *curl;
 		FILE *fp;
 		CURLcode res;
@@ -82,7 +81,11 @@ namespace gtarma {
 		char *url = new char[urlstream.str().length() + 1];
 		strcpy(url, urlstream.str().c_str());
 
-		char const* outfilename = item.Filename.c_str();
+		std::stringstream *filenamestream = new std::stringstream(); (*filenamestream) << path << item.Filename;
+		std::string tmp = filenamestream->str();
+		delete filenamestream;
+		char const* outfilename = tmp.c_str();
+
 		if (curl)
 		{
 			fp = fopen(outfilename, "wb");

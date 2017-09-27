@@ -1,6 +1,6 @@
 [submodule "externals/cpr"]
-	path = externals/cpr
+	path = gtarma-dl-core/externals/cpr
 	url = git@github.com:whoshuu/cpr.git
 [submodule "externals/rapidjson"]
-	path = externals/rapidjson
+	path = gtarma-dl-core/externals/rapidjson
 	url = git@github.com:Tencent/rapidjson.git
