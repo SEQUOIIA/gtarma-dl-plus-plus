@@ -29,11 +29,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../hummel.yt/gtarma-dl/build/lib/release/ -lgtarma-dl
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../hummel.yt/gtarma-dl/build/lib/debug/ -lgtarma-dl
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../gtarma-dl-core/build/lib/release/ -lgtarma-dl
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../gtarma-dl-core/build/lib/debug/ -lgtarma-dl
 
-INCLUDEPATH += $$PWD/../../hummel.yt/gtarma-dl/include
-DEPENDPATH += $$PWD/../../hummel.yt/gtarma-dl/include
+INCLUDEPATH += $$PWD/../gtarma-dl-core/include
+DEPENDPATH += $$PWD/../gtarma-dl-core/include
 
 HEADERS += \
     progress.h
