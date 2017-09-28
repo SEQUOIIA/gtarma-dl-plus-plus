@@ -10,25 +10,40 @@
 #include <QWindow>
 #include <chrono>
 #include <stdlib.h>
+#include <mutex>
 
 #include <tools.h>
 #include "progress.h"
 
+void downloaderWrapper(gtarma::model::Item item, std::string path, int total, Progress *p, std::mutex *m)
+{
+    gtarma::DownloadFile(item, path);
+    m->lock();
+    float progress = (float)(p->progressCompletedCount() + 1) / (float)(total);
+    p->setProgressvalue(progress);
+    p->setProgressCompletedCount(p->progressCompletedCount() + 1);
+    std::stringstream ss; ss << p->progressCompletedCount() << " out of " << p->progressTotalCount();
+    p->setSubtext(QString::fromStdString(ss.str()));
+    m->unlock();
+}
+
 void test(Progress *p, QGuiApplication * app) {
     std::vector<gtarma::model::Item> items = gtarma::GetFiles();
+    std::vector<std::thread> downloads;
     p->setProgressTotalCount(items.size());
+    std::mutex * mutex = new std::mutex();
 
     std::stringstream armaPath; armaPath << std::getenv("LOCALAPPDATA") << "\\Arma 3\\MPMissionsCache\\";
 
     for (int i = 0; i < items.size(); i++) {
         gtarma::model::Item item = items[i];
         std::string path = armaPath.str();
-        gtarma::DownloadFile(item, path);
-        float progress = (float)(i + 1) / (float)(items.size());
-        p->setProgressvalue(progress);
-        p->setProgressCompletedCount(p->progressCompletedCount() + 1);
-        std::stringstream ss; ss << p->progressCompletedCount() << " out of " << p->progressTotalCount();
-        p->setSubtext(QString::fromStdString(ss.str()));
+        downloads.push_back(std::thread(downloaderWrapper, item, path, items.size(), p, mutex));
+    }
+
+    for (std::thread& thread : downloads)
+    {
+        thread.join();
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
